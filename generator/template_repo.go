@@ -24,11 +24,14 @@ var templates *Repository
 // FuncMap is a map with default functions for use n the templates.
 // These are available in every template
 var FuncMap template.FuncMap = map[string]interface{}{
-	"pascalize": pascalize,
-	"camelize":  swag.ToJSONName,
-	"varname":   golang.MangleVarName,
-	"humanize":  swag.ToHumanNameLower,
-	"snakize":   golang.MangleFileName,
+	"pascalize": func(name string) string {
+		a := strings.Split(name, "#")
+		return pascalize(a[len(a)-1])
+	},
+	"camelize": swag.ToJSONName,
+	"varname":  golang.MangleVarName,
+	"humanize": swag.ToHumanNameLower,
+	"snakize":  golang.MangleFileName,
 	"toPackagePath": func(name string) string {
 		return filepath.FromSlash(golang.ManglePackagePath(name, ""))
 	},
